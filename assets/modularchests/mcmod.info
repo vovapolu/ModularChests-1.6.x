@@ -1,0 +1,19 @@
+[
+{
+  "modid": "ModularChests",
+  "name": "Modular Chests",
+  "description": "Modular Chests!",
+  "version": "0.0.1",
+  "credits": "vovapolu",
+  "logoFile": "",
+  "mcversion": "1.5.2",
+  "url": "",
+  "updateUrl": "",
+  "authors": [ "vovapolu" ],
+  "parent":"",
+  "screenshots": [],
+  "dependencies": [
+     "MinecraftForge"
+  ]
+}
+]
