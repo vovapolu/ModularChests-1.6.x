@@ -9,6 +9,7 @@ import vovapolu.modularchests.block.ModularChestItemBlock;
 import vovapolu.modularchests.items.BreakableUpgradeItem;
 import vovapolu.modularchests.items.CoreUpgradeItem;
 import vovapolu.modularchests.items.GUICraftUpgradeItem;
+import vovapolu.modularchests.items.GUIFurnaceUpgradeItem;
 import vovapolu.modularchests.items.ModularChestItemRender;
 import vovapolu.modularchests.items.StackSizeUpgradeItem;
 import vovapolu.modularchests.items.StorageUpgradeItemType;
@@ -62,6 +63,7 @@ public class ModularChests {
 	public static StackSizeUpgradeItem stackSizeUpgradeItem;
 	public static BreakableUpgradeItem breakableUpgradeItem;
 	public static GUICraftUpgradeItem workbenchUpgradeItem;
+	public static GUIFurnaceUpgradeItem furnaceUpgradeItem;
 	
 	// Cfg
 	public static int modularBlockId;
@@ -70,6 +72,7 @@ public class ModularChests {
 	public static int StackSizeUpgradeItemId;
 	public static int BreakableUpgradeItemId;
 	public static int WorkbenchUpgradeItemId;
+	public static int FurnaceUpgradeItemId;
 	
 	public static int inventoryFactor;
 
@@ -84,6 +87,7 @@ public class ModularChests {
 		StackSizeUpgradeItemId = cfg.getItem("StackSizeUpgradeItem", 6000).getInt();
 		BreakableUpgradeItemId = cfg.getItem("BreakableUpgradeItem", 5999).getInt();
 		WorkbenchUpgradeItemId = cfg.getItem("WorkbenchUpgradeItem", 5998).getInt();
+		FurnaceUpgradeItemId = cfg.getItem("FurnaceUpgradeItem", 5997).getInt();
 		Property InventoryFactorProperty = cfg.get(Configuration.CATEGORY_GENERAL, "InventoryFactor", 5);		
 		inventoryFactor = InventoryFactorProperty.getInt();
 	
@@ -101,17 +105,22 @@ public class ModularChests {
 				"breakableItem", "lapizBound.png");
 		workbenchUpgradeItem = new GUICraftUpgradeItem(WorkbenchUpgradeItemId, "workbenchUpgradeItem", 
 				"workbenchItem", "craftSide.png");
+		furnaceUpgradeItem = new GUIFurnaceUpgradeItem(FurnaceUpgradeItemId, "furnacehUpgradeItem", 
+				"furnaceItem", "furnaceSide.png");
 		
 		GameRegistry.registerItem(stackSizeUpgradeItem, "stackSizeUpgradeItem");
 		GameRegistry.registerItem(breakableUpgradeItem, "breakableUpgradeItem");
 		GameRegistry.registerBlock(modularChestBlock, ModularChestItemBlock.class, "ModularChest");
 		GameRegistry.registerItem(coreUpgradeItem, "CoreUpgradeItem");		
 		GameRegistry.registerItem(workbenchUpgradeItem, "WorkbenchItem");
+		GameRegistry.registerItem(furnaceUpgradeItem, "FurnaceItem");
+		
 		LanguageRegistry.addName(modularChestBlock, "Modular Chest");
 		LanguageRegistry.addName(coreUpgradeItem, "Upgrade Core");
 		LanguageRegistry.addName(breakableUpgradeItem, "Breakable Upgrade");
 		LanguageRegistry.addName(stackSizeUpgradeItem, "Stack Size Upgrade");
-		LanguageRegistry.addName(workbenchUpgradeItem, "WorkBench Upgrade");
+		LanguageRegistry.addName(workbenchUpgradeItem, "Workbench Upgrade");
+		LanguageRegistry.addName(furnaceUpgradeItem, "Furnace Upgrade");
 		
 		GameRegistry.addRecipe(new ItemStack(coreUpgradeItem), " x ", "xyx", " x ",
 		        'y', new ItemStack(Block.glass), 'x', new ItemStack(Block.stone));
@@ -123,6 +132,8 @@ public class ModularChests {
 				'x', new ItemStack(Item.dyePowder, 1, 4), 'c', new ItemStack(coreUpgradeItem));
 		GameRegistry.addRecipe(new ItemStack(workbenchUpgradeItem), " x ", "xcx", " x ", 
 				'x', new ItemStack(Block.workbench), 'c', new ItemStack(coreUpgradeItem));
+		GameRegistry.addRecipe(new ItemStack(furnaceUpgradeItem), " x ", "xcx", " x ", 
+				'x', new ItemStack(Block.furnaceIdle), 'c', new ItemStack(coreUpgradeItem));
 		
 		StorageUpgradeItemType.registreItems();
 		

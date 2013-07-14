@@ -48,8 +48,8 @@ public class ScrollContainer extends Container {
 		ArrayList<Slot> slots;
 		for (IGuiModule module: tileEntity.getModuleHandler().getModules())
 		{
-			slots = module.createSlots(this);
 			module.createInventory(this);
+			slots = module.createSlots(this, player);
 			for(Slot slot: slots)
 				addSlotToContainer(slot);
 		}

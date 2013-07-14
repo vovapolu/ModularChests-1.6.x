@@ -5,6 +5,7 @@ import java.util.Random;
 
 import vovapolu.modularchests.ModularChestTileEntity;
 import vovapolu.modularchests.ModularChests;
+import vovapolu.modularchests.guimodule.IGuiModule;
 import vovapolu.modularchests.items.BreakableUpgradeItem;
 import vovapolu.modularchests.items.ModularChestUpgradeItem;
 
@@ -108,6 +109,7 @@ public class ModularChestBaseBlock extends BlockContainer {
 				dropUpgrades(world, x, y, z);
 				dropItems(world, x, y, z);
 				dropItem(new ItemStack(this), world, x, y, z);
+				dropModules(world, x, y, z);
 			}
 			else 
 			{
@@ -150,6 +152,23 @@ public class ModularChestBaseBlock extends BlockContainer {
 				ItemStack itemstack = new ItemStack(item);
 				dropItem(itemstack, world, x, y, z);
 			}
+		}
+	}
+	
+	public static void dropModules(World world, int x, int y, int z)
+	{
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		if (!(tileEntity instanceof ModularChestTileEntity)) {
+			return;
+		}
+		
+		ModularChestTileEntity mte = (ModularChestTileEntity) tileEntity;
+		ArrayList<IGuiModule> modules = mte.getModuleHandler().getModules();
+		for (IGuiModule module: modules)
+		{
+			ArrayList<ItemStack> items = module.itemsToDrop();
+			for (ItemStack item: items)
+				dropItem(item, world, x, y, z);
 		}
 	}
 	

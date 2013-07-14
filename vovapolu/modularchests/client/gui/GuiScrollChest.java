@@ -166,7 +166,6 @@ public class GuiScrollChest extends GuiContainer {
 	protected void drawGuiContainerBackgroundLayer(float particleTick, int mouseX, int mouseY) {
 		
 		this.mc.renderEngine.func_110577_a(new ResourceLocation("modularchests:textures/gui/scroll_container.png"));
-		//.bindTexture("/mods/ModularChests/textures/gui/scroll_container.png");
 		this.drawTexturedModalRect(xGui, yGui, 0, 0, xSize, ySize);
 		this.drawTexturedModalRect(xGui + barX, yGui + barY + 
 				(int)((float)(barHeight - pHeight) * this.scrollVal), 
@@ -175,8 +174,9 @@ public class GuiScrollChest extends GuiContainer {
 		tabs.drawTabs(xGui - 20, yGui + 6, this);
 		
 		final int moduleWidth = 90, moduleHeight = 90;
-		ImageUtils.bindTextureByImage(tileEntity.getModuleHandler().getActiveModule().getGuiImage());
-		this.drawTexturedModalRect(xGui + 8, yGui + 17, 0, 0, moduleWidth, moduleHeight);
+		//ImageUtils.bindTextureByImage(tileEntity.getModuleHandler().getActiveModule().getGuiImage());
+		//this.drawTexturedModalRect(xGui + 8, yGui + 17, 0, 0, moduleWidth, moduleHeight);
+		tileEntity.getModuleHandler().getActiveModule().drawBackground(this, xGui + 8, yGui + 17);
 		
 		this.mc.renderEngine.func_110577_a(new ResourceLocation("modularchests:textures/gui/scroll_container.png"));
 		Point startPoint = container.getChestStartPoint();

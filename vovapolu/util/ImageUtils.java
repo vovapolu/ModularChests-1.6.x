@@ -8,6 +8,9 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.util.ResourceLocation;
 
@@ -46,8 +49,9 @@ public final class ImageUtils {
 	
 	public static void bindTextureByImage(BufferedImage image)
 	{
-		int num = TextureUtil.func_110987_a(TextureUtil.func_110996_a(), image);		
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, num);
+		DynamicTexture texture = new DynamicTexture(image);
+		ResourceLocation rec = FMLClientHandler.instance().getClient().renderEngine.func_110578_a("ModularChestTexture", texture);
+		FMLClientHandler.instance().getClient().renderEngine.func_110577_a(rec);
 	}
 	
 	public static void bindTextureByName(String name)

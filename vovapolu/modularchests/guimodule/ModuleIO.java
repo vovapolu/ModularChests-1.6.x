@@ -26,6 +26,7 @@ public final class ModuleIO {
 	static{
 		registerModuleClass(CraftModule.class);
 		registerModuleClass(ChestModule.class);
+		registerModuleClass(FurnaceModule.class);
 	}
 	
 	public static void writeModuleToNBT(IGuiModule module, NBTTagCompound tag)

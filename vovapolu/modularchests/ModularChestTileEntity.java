@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import vovapolu.modularchests.block.ModularChestBaseBlock;
+import vovapolu.modularchests.guimodule.IGuiModule;
 import vovapolu.modularchests.guimodule.ModularChestGuiModuleHandler;
 import vovapolu.modularchests.items.ModularChestUpgradeItem;
 import vovapolu.modularchests.items.ModularChestUpgradesStorage;
@@ -202,7 +203,7 @@ public class ModularChestTileEntity extends TileEntity implements
 			inv.add(null);			
 		for (int i = 0; i < tagList.tagCount(); i++) {
 			NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
-			byte slot = tag.getByte("Slot");
+			int slot = tag.getInteger("Slot");
 			if (slot >= 0 && slot < inv.size()) {
 				inv.set(slot, ItemStack.loadItemStackFromNBT(tag));
 			}
@@ -237,7 +238,7 @@ public class ModularChestTileEntity extends TileEntity implements
 			ItemStack stack = inv.get(i);
 			if (stack != null) {
 				NBTTagCompound tag = new NBTTagCompound();
-				tag.setByte("Slot", (byte) i);
+				tag.setInteger("Slot", i);
 				stack.writeToNBT(tag);
 				itemList.appendTag(tag);
 			}
@@ -289,11 +290,9 @@ public class ModularChestTileEntity extends TileEntity implements
 			Packet132TileEntityData packet) {
 		readFromNBT(packet.customParam1);
 	}
-
-	@Override
-	public void updateEntity() {
-		super.updateEntity();
-		++ticksSinceSync;
+	
+	private void updateChestAngle()
+	{
 		float padding;
 
 		if (!worldObj.isRemote && numUsingPlayers != 0
@@ -357,6 +356,24 @@ public class ModularChestTileEntity extends TileEntity implements
 		}
 	}
 	
+	private void updateModules() {
+		ArrayList<IGuiModule> modules = moduleHandler.getModules();
+		for (IGuiModule module: modules)
+		{
+			if (module.isNeedToUpdate())
+				module.updateModule(worldObj.isRemote);
+		}
+	}
+
+	@Override
+	public void updateEntity() {
+		super.updateEntity();
+		++ticksSinceSync;
+		
+		updateChestAngle();
+		updateModules();
+	}
+
 	public boolean mergeItemStack(ItemStack stack)
 	{		
         int i = 0;

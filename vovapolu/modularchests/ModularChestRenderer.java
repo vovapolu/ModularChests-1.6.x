@@ -53,7 +53,8 @@ public class ModularChestRenderer extends TileEntitySpecialRenderer {
 	{		
 		Point3i point = new Point3i((int)x, (int)y, (int)z);
 		textureMaker.setStorage(storage);
-			
+		
+		//textureMaker.getTexture();
 		ImageUtils.bindTextureByImage(textureMaker.getTexture());		
 		//bindTextureByName("/mods/ModularChests/textures/model/stoneChest.png");
 		glPushMatrix();

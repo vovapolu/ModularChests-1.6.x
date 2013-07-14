@@ -6,11 +6,18 @@ import java.util.ArrayList;
 
 import javax.rmi.CORBA.Util;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+
 import vovapolu.modularchests.ScrollChestSlot;
 import vovapolu.modularchests.ScrollContainer;
 import vovapolu.util.ContainerCraftProxy;
 import vovapolu.util.ImageUtils;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
@@ -22,6 +29,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor;
 
 public class CraftModule implements IGuiModule {
 	
@@ -38,20 +46,15 @@ public class CraftModule implements IGuiModule {
 	public Point getIcon() {
 		return iconPoint;
 	}
-
-	@Override
-	public BufferedImage getGuiImage() {
-		return ImageUtils.loadImageByName("gui", "craftModule.png");
-	}
 	
 	@Override
 	public void createInventory(ScrollContainer container)
-	{
+	{		
 		proxyContainer.setRealContainer(container);
 	}
 
 	@Override
-	public ArrayList<Slot> createSlots(ScrollContainer container) {
+	public ArrayList<Slot> createSlots(ScrollContainer container, EntityPlayer player) {
 		
 		slots = new ArrayList<Slot>();
 		slots.add(new SlotCrafting(container.player, this.craftMatrix, this.craftResult, 0, -100, -100));
@@ -108,8 +111,32 @@ public class CraftModule implements IGuiModule {
 	}
 
 	@Override
-	public void updateModule() {
+	public void updateModule(boolean isRemote) {
 		proxyContainer.onCraftMatrixChanged(craftMatrix);
+	}
+
+	@Override
+	public void drawBackground(GuiContainer gui, int x, int y) {
+		ImageUtils.bindTextureByName("textures/gui/craftModule.png");
+		gui.drawTexturedModalRect(x, y, 0, 0, 90, 90);
+	}
+
+	@Override
+	public void updateSlots() {
+	}
+
+	@Override
+	public boolean isNeedToUpdate() {
+		return false;
+	}
+
+	@Override
+	public ArrayList<ItemStack> itemsToDrop() {
+		ArrayList<ItemStack> res = new ArrayList<ItemStack>();
+		for (int i = 0; i < 9; i++)
+			if (craftMatrix.getStackInSlot(i) != null)
+				res.add(craftMatrix.getStackInSlot(i).copy());
+		return res;
 	}
 	
 }

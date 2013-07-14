@@ -18,8 +18,6 @@ import vovapolu.util.ImageUtils;
 
 public class ModularChestTextureMaker {
 	private BufferedImage mainTexture;
-	private BufferedImage sides[] = new BufferedImage[6];
-	private ArrayList<BufferedImage> globalTextures = new ArrayList<BufferedImage>();
 	private BufferedImage resImage;	
 	/**
 	 * coordinates of first side on texture
@@ -29,39 +27,12 @@ public class ModularChestTextureMaker {
 	public static final int topWidth = 10, topHeight = 10;
 	public static final int sideWidth = 14, sideHeight = 10;
 	
-	
 	private ModularChestUpgradesStorage storage;
 	
-	
-		
-	public void loadTextures()
-	{
-		if (storage == null)
-			return;
-		for (int side = 0; side < 6; side++)
-			if (storage.getSideItem(side) != null)
-				sides[side] = ImageUtils.loadImageByName("model", storage.getSideItem(side).getTextureName());
-			else 
-				sides[side] = null;
-		
-		if (globalTextures.size() != storage.getGlobalItemsCount())
-			globalTextures.clear();
-		for (int i = 0; i < storage.getGlobalItemsCount(); i++)
-		{
-			BufferedImage newImage = ImageUtils.loadImageByName("model", storage.getGlobalItem(i).getTextureName());
-			if (globalTextures.size() <= i)
-				globalTextures.add(newImage);
-			else 
-				globalTextures.set(i, newImage);
-		}
-		
-		mainTexture = ImageUtils.loadImageByName("model", "stoneChest.png");	
-	}
-	
 	public ModularChestTextureMaker(ModularChestUpgradesStorage aStorage) {
+		mainTexture = ImageUtils.loadImageByName("model", "stoneChest.png");	
 		storage = aStorage;	
 	}
-	
 	
 	public void setStorage(ModularChestUpgradesStorage aStorage)
 	{
@@ -72,7 +43,7 @@ public class ModularChestTextureMaker {
 	{
 		if (storage == null)
 			return null;
-		loadTextures();			
+		//loadTextures();			
 		if (resImage == null)
 			resImage = new BufferedImage(mainTexture.getWidth(), mainTexture.getHeight(), mainTexture.getType());
 				
@@ -82,16 +53,18 @@ public class ModularChestTextureMaker {
 		//draw textures on sides
 		int nowX = xSide, nowY = ySide;
 		for (int i = 0; i < 4; i++)
-			ImageUtils.drawCentered(g, (i ^ 1) * sideWidth + nowX, nowY, 
-					sideWidth, sideHeight, sides[i]); // "i ^ 1" some kind of magic, but it works		
+			if (storage.getSideItem(i) != null)
+				ImageUtils.drawCentered(g, (i ^ 1) * sideWidth + nowX, nowY,  // "i ^ 1" some kind of magic, but it works
+						sideWidth, sideHeight, 
+						ImageUtils.loadImageByName("model", storage.getSideItem(i).getTextureName()));		
 		
-		ImageUtils.drawCentered(g, xTop, yTop, topWidth, topHeight, sides[5]);
+		if (storage.getSideItem(5) != null)
+			ImageUtils.drawCentered(g, xTop, yTop, topWidth, topHeight, 
+					ImageUtils.loadImageByName("model", storage.getSideItem(5).getTextureName()));
 		
 		//draw textures of global upgrades
-		for (int i = 0; i < globalTextures.size(); i++)
-		{
-			g.drawImage(globalTextures.get(i), 0, 0, null);			
-		}
+		for (int i = 0; i < storage.getGlobalItemsCount(); i++)
+			g.drawImage(ImageUtils.loadImageByName("model", storage.getGlobalItem(i).getTextureName()), 0, 0, null);			
 		
 		g.dispose();
 		
