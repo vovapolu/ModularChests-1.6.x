@@ -376,68 +376,68 @@ public class ModularChestTileEntity extends TileEntity implements
 
 	public boolean mergeItemStack(ItemStack stack)
 	{		
-        int i = 0;
-        boolean changed = false;
-        
-        ItemStack nowStack;
-
-        if (stack.isStackable())
-        {
-            while (stack.stackSize > 0 &&  i < inv.size())
-            {
-                nowStack = inv.get(i);
-
-                if (nowStack != null && nowStack.itemID == stack.itemID && (!stack.getHasSubtypes() || stack.getItemDamage() == nowStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, nowStack))
-                {
-                    int sum = nowStack.stackSize + stack.stackSize;
-                    int limit = Math.min(stack.getMaxStackSize(), getInventoryStackLimit());
-                
-                    if (sum <= limit)
-                    {
-                        stack.stackSize = 0;
-                        nowStack.stackSize = sum;     
-                        changed = true;
-                    }
-                    else if (nowStack.stackSize < limit)
-                    {
-                        stack.stackSize -= limit - nowStack.stackSize;
-                        nowStack.stackSize = limit;
-                        changed = true;
-                    }
-                }
-
-                ++i;
-            }
-        }
-
-        if (stack.stackSize > 0)
-        {
-            i = 0;
-            while (i < inv.size())
-            {           
-                nowStack = inv.get(i);
-
-                if (nowStack == null)
-                {
-                	ItemStack newStack;
-                	if (stack.stackSize >= getInventoryStackLimit())            
-                		newStack = stack.splitStack(getInventoryStackLimit());
-                	else 
-                	{
-                		newStack = stack.copy();
-                		stack.stackSize = 0;
-                	}
-                    inv.set(i, newStack.copy());                                        
-                    changed = true;                    
-                    
-                    if (stack.stackSize == 0)
-                    	break;
-                }
-                ++i;
-            }
-        }
-        
-        return changed;
+	        int i = 0;
+	        boolean changed = false;
+	        
+	        ItemStack nowStack;
+	
+	        if (stack.isStackable())
+	        {
+	            while (stack.stackSize > 0 &&  i < inv.size())
+	            {
+	                nowStack = inv.get(i);
+	
+	                if (nowStack != null && nowStack.itemID == stack.itemID && (!stack.getHasSubtypes() || stack.getItemDamage() == nowStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, nowStack))
+	                {
+	                    int sum = nowStack.stackSize + stack.stackSize;
+	                    int limit = Math.min(stack.getMaxStackSize(), getInventoryStackLimit());
+	                
+	                    if (sum <= limit)
+	                    {
+	                        stack.stackSize = 0;
+	                        nowStack.stackSize = sum;     
+	                        changed = true;
+	                    }
+	                    else if (nowStack.stackSize < limit)
+	                    {
+	                        stack.stackSize -= limit - nowStack.stackSize;
+	                        nowStack.stackSize = limit;
+	                        changed = true;
+	                    }
+	                }
+	
+	                ++i;
+	            }
+	        }
+	
+	        if (stack.stackSize > 0)
+	        {
+	            i = 0;
+	            while (i < inv.size())
+	            {           
+	                nowStack = inv.get(i);
+	
+	                if (nowStack == null)
+	                {
+	                	ItemStack newStack;
+	                	if (stack.stackSize >= getInventoryStackLimit())            
+	                		newStack = stack.splitStack(getInventoryStackLimit());
+	                	else 
+	                	{
+	                		newStack = stack.copy();
+	                		stack.stackSize = 0;
+	                	}
+	                    inv.set(i, newStack.copy());                                        
+	                    changed = true;                    
+	                    
+	                    if (stack.stackSize == 0)
+	                    	break;
+	                }
+	                ++i;
+	            }
+	        }
+	        
+	        return changed;
 	}
 	
 	public void addSlots(int count)
